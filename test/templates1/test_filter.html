@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Jinja2 Filter</title>
+</head>
+<body>
+    <p style="color: blue"> {{ 'Hello Jinja2 !' | reverse }} </p>
+
+    <br/><p style="color: red"> {{ data.keys() | upper }} </p>
+    <br/>
+    {% for key in data.keys() %}
+        <div>
+            <p style="color: rebeccapurple"> {{ '%s : %s' | format(key, data[key]) }} </p>
+        </div>
+    {% endfor %}
+
+    {{ SomePath['SomePath'] | safe | truncate(300, True) | lower}}
+    #list
+    <br/><p style="color: red"> {{ data.keys() | first  }} </p>
+    {% filter upper %}
+        python 碎片<br/>
+      <p style="color:green">{{ data }}</p>
+    {% endfilter %}
+</body>
+</html>

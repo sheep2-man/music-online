@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8">
+    <title>甜橙云音乐</title>
+    <link href="{{ url_for('static',filename='css/core.css')}}" rel="stylesheet">
+    <link href="{{ url_for('static',filename='css/pt_frame.css')}}" rel="stylesheet">
+	<link href="{{ url_for('static',filename='js/toolTip/tooltip.css')}}" rel="stylesheet">
+	<script type="text/javascript" src="{{url_for('static',filename='js/toolTip/tooltip.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='js/jquery-2.2.0.min.js')}}"></script>
+    <style>html, body {
+        overflow: hidden;
+    }</style>
+    <script>if (top != self)top.location = self.location;</script>
+</head>
+<body class="auto-1469062573613-parent auto-1469062573612-parent">
+<div id="g-topbar" class="g-topbar">
+    <div class="m-top">
+        <div class="wrap">
+            <!-- <a> 标签的 target 属性规定在何处打开链接文档-->
+            <!-- 表示在哪里开打链接档文件内容 例如目录在左，内容在右，的架构写法 -->
+            <!-- .logo 在static/css/core.css 里面有作样式设置 -->
+            <h1 class="logo"><a hidefocus="true" target="contentFrame" href="{{url_for('home.index')}}">甜橙云音乐</a></h1>
+            <ul class="m-nav j-tflag">
+                <li class="fst">
+                    <span><a hidefocus="true" target="contentFrame" href="{{url_for('home.search')}}" data-module="discover" class="z-slt"><em>发现音乐</em></a></span>
+                </li>
+                <li>
+                    <span><a target="contentFrame" href="{{url_for('home.collectList')}}"><em>我的音乐</em><sub class="cor">&nbsp;</sub></a></span>
+                </li>
+            </ul>
+			{% if session['username'] %}   <!--如果有账户信息-->
+            <div class="m-tophead f-pr j-tflag" >
+				<a onmouseover="tooltip.pop(this, '#textContent',{position:1, offsetX:0,  effect:'slide'})"  class="tooltip" style="color:#1C2021">您好，{{ session['username']}}</a>
+            </div>
+			<div style="display: none">
+				<div id="textContent" style="width: 75px; height: 45px;color:black">
+					{% if session['username'] == 'zyg' %}
+					<a target="contentFrame" href="{{url_for('home.manageArtist')}}">后台管理</a>
+					{% else %}
+					<a target="contentFrame" href="{{url_for('home.modifyPassword')}}">修改密码</a>
+					{% endif %}
+					<br />
+					<a id="blogUrl" href="{{ url_for('home.logout')}}">退出</a>
+				</div>
+			</div>
+			{% else %}  <!--否则 无账户登录信息-->
+			<div class="m-tophead f-pr j-tflag">
+				<a id="login" class="name f-thide f-fl f-tdn" style="color:#1C2021">登录</a>
+				<a id="register" class="name f-thide f-fl f-tdn" style="color:#1C2021">注册</a>
+			</div>
+			{% endif %}
+		</div>
+    </div>
+    <div class="m-subnav m-subnav-up f-pr j-tflag f-hide">
+        <div class="shadow">&nbsp;</div>
+    </div>
+    <div id="g_nav2" class="m-subnav j-tflag">
+        <div class="wrap f-pr">
+            <ul class="nav">
+                <li><a hidefocus="true" target="contentFrame" href="{{url_for('home.index')}}" data-module="discover"
+                       class="z-slt menuTab"><em>推荐</em></a></li>
+                <li><a hidefocus="true" target="contentFrame" href="{{url_for('home.toplist')}}" data-module="toplist"
+                       class="menuTab"><em>排行榜</em></a></li>
+                <li><a hidefocus="true" target="contentFrame" href="{{url_for('home.styleList')}}" data-module="playlist"
+					   class="menuTab"><em>曲风</em></a>
+                </li>
+                <li><a hidefocus="true" target="contentFrame" href="{{url_for('home.artistList')}}" data-module="artist"
+                       class="menuTab"><em>歌手</em></a>
+				</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script>
+$(".menuTab").bind("click", function(obj){
+	$('.menuTab').removeClass("z-slt");  // 这个是什么意思？删掉当前选中元素的被选中标记
+	obj.currentTarget.className='z-slt menuTab'; // 被点击的元素加上被选中标记
+	// obj.currentTarget.className  https://www.cnblogs.com/yewenxiang/p/6171411.html
+    // 绑定事件的元素  和  触发事件的元素  不一样
+    /*在嵌套结构里，绑定事件的是父元素，触发事件的可能是子元素
+    event.target  返回触发事件的元素
+    event.currentTarget  返回绑定事件的元素
+     */
+});
+</script>
+
+<!--
+<iframe>标签是一个内联框架，即用来在当前HTML页面中嵌入另一个文档的，且所有主流浏览器都支持iframe标签
+-->
+<iframe name="contentFrame" id="g_iframe" class="g-iframe" scrolling="auto" frameborder="0"
+        src="{{ url_for('home.contentFrame') }}">
+</iframe>
+
+<link href="{{url_for('static',filename='css/jplayer.blue.monday.min.css')}}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{url_for('static',filename='js/jplayer/jquery.jplayer.min.js')}}"></script>
+<script>
+// 定义播放音乐的方法
+function playMusic(name, id) {
+   addMyList(id)											// 调用添加播放次数方法
+   $("#jquery_jplayer").jPlayer( "destroy" );         	// 销毁正在播放的音乐
+   $("#jquery_jplayer").jPlayer({						// 播放音乐
+		ready: function(event) {						// 准备音频
+			$(this).jPlayer("setMedia", {
+				title: name,							// 设置音乐标题
+				mp3: "static/images/song/53.mp3"		// 设置播放音乐
+                // 这里把音乐路径定死了，正常应该怎么做？这里有name 和id，怎么获取文件路径
+                // 我觉得应该要再加个参数把FileURL传递过来，算了先不管了
+                // 所有的静态资源都挂在在应用路径下的吗，那这个应用的体积岂不是很大
+			}).jPlayer( "play" );						// 开始播放
+		},
+		swfPath: "dist/jplayer/jquery.jplayer.swf",     // IE8下的兼容播放
+		supplied: "mp3",								// 音乐格式为mp3
+		wmode: "window",								// 播放模式“window”
+		useStateClassSkin: true,						// 设置默认样式
+		autoBlur: false,								// 不支持模糊
+		smoothPlayBar: true,							// 支持图标
+		keyEnabled: true,								// 支持键盘
+		remainingDuration: true,						// 支持动画
+		toggleDuration: true// 支持进度条
+	});
+}
+
+// 添加播放次数
+function addMyList(id){
+	$.ajax({
+		url: "{{url_for('home.addHit')}}",		// 提交地址
+		type: "get",							// 提交类型
+		data: {id: id},							// 提交数据
+		success: function(res) {				// 回调函数
+			console.log(res.message)
+		}
+	});
+}
+
+// 添加收藏
+function addShow(id){
+	var username= "{{session['username']}}";
+	if(username=="null" || username==""){
+		layer.msg("收藏请先登录!",{icon:2,time:1000});
+		return;
+	}
+	$.ajax({
+		url: "{{url_for('home.collect')}}",
+		type: "get",
+		data: {
+			id: id
+		},
+		success: function(res){
+			if(res.status==12){
+				layer.msg(res.message,{icon:1})
+			}else{
+				layer.msg(res.message,{icon:2})
+			}
+        }
+     });
+}
+</script>
+		<div id="demo" style="z-index: 999; position: fixed;right:0;left:0;bottom:0;width:100%;">
+			<div id="jquery_jplayer" class="jp-jplayer">
+			</div>
+			<div id="jp_container_1" class="jp-audio" role="application"
+				aria-label="media player">
+				<div class="jp-type-single">
+					<div class="jp-details">
+						<div class="jp-title" aria-label="title">
+							暂无播放音乐
+						</div>
+					</div>
+					<div class="jp-gui jp-interface" style="margin-left:30% " >
+						<div class="jp-controls">
+							<button class="jp-play" role="button" tabindex="0">
+								play
+							</button>
+						</div>
+						<div class="jp-progress">  <!--歌曲播放进度条-->
+							<div class="jp-seek-bar">
+								<div class="jp-play-bar"></div>
+							</div>
+						</div>
+						<div class="jp-volume-controls"> <!--音量控制键-->
+							<button class="jp-mute" role="button" tabindex="0">
+								mute
+							</button>
+							<button class="jp-volume-max" role="button" tabindex="0">
+								max volume
+							</button>
+							<div class="jp-volume-bar">
+								<div class="jp-volume-bar-value"></div>
+							</div>
+							<div class="jp-duration" role="timer" aria-label="duration">
+								&nbsp;
+							</div>
+							<div class="jp-time-holder">
+								<div class="jp-duration" role="timer" aria-label="duration">
+									&nbsp;
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+<script type="text/javascript" src="{{url_for('static',filename='js/layer/layer.js')}}"></script>
+<script>
+// 登录弹窗    layer.open() https://www.cnblogs.com/xiaostudy/p/12335716.html
+$("#login").click(function () {
+	layer.open({  // jQuery layer[页面弹出框]
+	  type: 2,  // 基本层类型：0（信息框，默认）1（页面层）2（iframe层，也就是解析content）3（加载层）4（tips层）
+	  title: '登录',   // 标题
+	  shadeClose: true,  // 是否点击遮罩关闭：默认：false
+	  shade: 0.4,   // 遮罩：默认：0.3透明度的黑色背景（'#000'）
+	  area: ['700px', '550px'],   // 宽高：如果是100%就是满屏
+	  content: ['/login','no']   //iframe的url  // 当type: 2时就是content的值就是url
+      // 此处页面解析出来的内容是由 /login 路由处理的  no表示不想让iframe出现滚动条
+	});
+});
+// 注册弹窗
+$("#register").click(function () {
+	layer.open({
+	  type: 2,
+	  title: '注册',
+	  shadeClose: true,
+	  shade: 0.4,
+	  area: ['700px', '550px'],
+	  content: ['/register','no'] //iframe的url
+	});
+})
+</script>
+</body>
+</html>

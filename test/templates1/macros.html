@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+</head>
+
+{#{% macro %}{% endmarco %}定义宏的标准语法，起始跟结束标签 #}
+{#macro后面的input为宏的名字，括号中的值为宏的参数，例如：type="text"表示默认文本类型为text #}
+{% macro input(name,type="text",value="") %}
+{#将input宏后面的name,type,value参数作为变量传入name,type,value值中 #}
+   <input name="{{ name }}" type="{{ type }}" value="{{ value }}">
+{% endmacro %}
+
+{% macro render_comment(comment) %}
+     <li>{{ comment }}</li>
+{% endmacro %}
+
+<body>
+
+</body>
+</html>

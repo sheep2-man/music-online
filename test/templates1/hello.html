@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+    <h2>我是模板</h2>
+    {{ my_int }}
+    <br>
+    {{ my_str }}
+    <br>
+    {{ my_array }}
+    <br>
+    {{ my_dict }}
+    <hr>
+    <h2>模板的list数据获取</h2>
+    <hr>
+    {{ my_array[0] }}
+    <br>
+    {{ my_array.1 }}
+    <hr>
+    <h2>字典数据获取</h2>
+    <hr>
+    {{ my_dict['name'] }}
+    <br>
+    {{ my_dict.age }}
+    <hr>
+    <h2>算术运算</h2>
+    <br>
+    {{ my_array.0 + 10 }}
+    <br>
+    {{ my_array[0] + my_array.1 }}
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+<!--    {% set name='nacy.Shan' %}-->
+
+<!--    {# 输出大写 #}-->
+<!--    <h1>hello, {{ name|upper }}!</h1>-->
+
+<!--    {# 输出大写，超过3个字符打断，用'...'替代 #}-->
+<!--    <h1>hello, {{ name|upper|truncate(3) }} !</h1>-->
+
+<!--    {# 当变量未定义时，显示默认字符串，可以缩写为d #}-->
+<!--    {{ name | default('No name', true) }} <br />-->
+<!--    {{ new_name | d('No new_name ', true) }} <br />-->
+
+<!--    {# 单词首字母大写 #}-->
+<!--    {{ 'hello' | capitalize }} <br />-->
+
+<!--    {# 单词全小写 #}-->
+<!--    {{ 'XML' | lower }} <br />-->
+
+<!--    {# 去除字符串前后的空白字符 #}-->
+<!--    {{ '  hello  ' | trim }} <br />-->
+
+<!--    {# 字符串反转，返回"olleh" #}-->
+<!--    {{ 'hello' | reverse }} <br />-->
+
+<!--    {# 格式化输出，返回"Number is 2" #}-->
+<!--    {{ '%s is %d' | format("Number", 2) }} <br />-->
+
+<!--    {# 关闭HTML自动转义 #}-->
+<!--    {{ '<em>name</em>' | safe }} <br />-->
+
+<!--    {# 四舍五入取整，返回13.0 #}-->
+<!--    {{ 12.8888 | round }} <br />-->
+
+<!--    {# 向下截取到小数点后2位，返回12.88 #}-->
+<!--    {{ 12.8888 | round(2, 'floor') }} <br />-->
+
+<!--    {# 绝对值，返回12 #}-->
+<!--    {{ -12 | abs }} <br />-->
+
+<!--    {# 取第一个元素 #}-->
+<!--    {{ [1,2,3,4,5] | first }} <br />-->
+
+<!--    {# 取最后一个元素 #}-->
+<!--    {{ [1,2,3,4,5] | last }} <br />-->
+
+<!--    {# 返回列表长度，可以写为count #}-->
+<!--    {{ [1,2,3,4,5] | length }} <br />-->
+
+<!--    {# 列表求和 #}-->
+<!--    {{ [1,2,3,4,5] | sum }} <br />-->
+
+<!--    {# 列表排序，默认为升序 #}-->
+<!--    {{ [3,2,1,5,4] | sort }} <br />-->
+
+<!--    {# 合并为字符串，返回"1 | 2 | 3 | 4 | 5" #}-->
+<!--    {{ [1,2,3,4,5] | join(' | ') }} <br />-->
+
+<!--    {# 列表中所有元素都全大写。这里可以用upper,lower，但capitalize无效 #}-->
+<!--    {{ ['tom','bob','ada'] | upper }} <br />-->
+
+<!--    {# 字典操作 #}-->
+<!--{#    {% set users=[{'name':'Tom','gender':'M','age':20},#}-->
+<!--{#                  {'name':'John','gender':'M','age':18},#}-->
+<!--{#                  {'name':'Mary','gender':'F','age':24},#}-->
+<!--{#                  {'name':'Bob','gender':'M','age':31},#}-->
+<!--{#                  {'name':'Lisa','gender':'F','age':19}]#}-->
+<!--{#    %}#}-->
+
+<!--    {# 按指定字段排序，这里设reverse为true使其按降序排 #}-->
+<!--    <ul>-->
+<!--    {% for user in users | sort(attribute='age', reverse=true) %}-->
+<!--        <li style="color: blue">{{ user.name }}, {{ user.age }}</li>-->
+<!--    {% endfor %}-->
+<!--    </ul>-->
+
+<!--    {# 列表分组，每组是一个子列表，组名就是分组项的值 #}-->
+<!--    <ul>-->
+<!--    {% for group in users|groupby('gender') %}-->
+<!--    <li style="color: red">{{ group.grouper }}-->
+<!--    <ul>-->
+<!--        {% for user in group.list %}-->
+<!--    <li style="color: purple">{{ user.name }}</li>-->
+<!--        {% endfor %}</ul>-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--    </ul>-->
+
+<!--    {# 取字典中的某一项组成列表，再将其连接起来 #}-->
+<!--    {{ users | map(attribute='name') | join(', ') }}-->
+
+    {% macro print(comment) %}
+     <li style="color:red">{{ comment }}</li>
+{% endmacro %}
+
+
+
+
+ <ur>
+    {%  for user in users %}
+        {% if user.age==18 %}
+
+        {{print(user.age)}}
+
+        <li>{{user.name}}</li>
+        {% endif %}
+
+    {%endfor%}
+
+    </ur>
+
+</body>
+</html>
